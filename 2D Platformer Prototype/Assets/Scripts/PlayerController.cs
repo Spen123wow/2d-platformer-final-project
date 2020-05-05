@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -40,6 +41,11 @@ public class PlayerController : MonoBehaviour
         Bunny();
         Snake();
         Owl();
+        if (transform.position.y <= -9f)
+        {
+            life = 0;
+            Kill();
+        }
         if(state != State.bunnyHurt && state != State.snakeHurt && state != State.owlHurt)
         {
             Movement();
@@ -59,8 +65,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                life = life - 1;
-                lifeText.text = life.ToString();
+                HandleHealth(); //Deals with health, updates ui, and resets level if life = 0
                 if (character == 1)
                 {
                     state = State.bunnyHurt;
@@ -84,6 +89,25 @@ public class PlayerController : MonoBehaviour
                     rb.velocity = new Vector2(hurtForce, rb.velocity.y);
                 }
             }
+        }
+        if(other.gameObject.tag == "End")
+        {
+            SceneManager.LoadScene("Menu");
+        }
+    }
+
+    private void HandleHealth()
+    {
+        life = life - 1;
+        lifeText.text = life.ToString();
+        Kill();
+    }
+
+    private void Kill()
+    {
+        if (life <= 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 

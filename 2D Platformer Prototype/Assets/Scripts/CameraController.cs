@@ -8,6 +8,20 @@ public class CameraController : MonoBehaviour {
 
     private void Update()
     {
-        transform.position = new Vector3(player.position.x, player.position.y, transform.position.z);
+        transform.position = new Vector3(player.position.x, VerticalMin(), transform.position.z);
+    }
+
+    private float VerticalMin()
+    {
+        float yMin = -4f;
+        if (player.position.y <= -4f)
+        {
+            return yMin;
+        }
+        else
+        {
+            return player.position.y;
+        }
+
     }
 }
